@@ -1,0 +1,139 @@
+﻿<krpano version="1.19" title="Virtual Tour">
+
+	<include url="skin/vtourskin.xml" />
+	<include url="plugins/geoMapping/geomapping.xml" />
+
+	<action name="startup" autorun="onstart">
+		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
+		loadscene(get(startscene), null, MERGE);
+		if(startactions !== null, startactions() );
+		skin_hideskin(true);
+	</action>
+
+	<layer name="btn_on_off" type="container" align="bottom" x="0" y="60" y.iphone="60" keep="true">
+    <layer name="item_ON" url="skin/cityloop.png" align="middle" x="-0" scale="0.3" alpha="1.0" onclick="openurl(../CYCLORAMA/index.html, _self);"/>
+   </layer>
+
+    <layer name="btn_VR" type="container" align="rightbottom" x="30" y="60" y.iphone="60" keep="true">
+    <layer name="item_VR_ON" url="skin/Picto_Info_OFF.png" align="middle" x="-0" scale="0.15" alpha="0.0" onclick="set(layer[item_VR_ON].alpha,0.0);
+                                                                                            set(layer[item_VR_OFF].alpha,1.0);
+                                                                                            set(layer[item_VR_ON].enabled,false);
+                                                                                            set(layer[item_VR_OFF].enabled,true);
+                                                                                            set(switchVR, false);action_btnVR();"/>
+   <layer name="item_VR_OFF" url="skin/Picto_Info_ON.png" align="middle" x="-0" scale="0.15" alpha="1.0" onclick="set(layer[item_VR_ON].alpha,1.0);
+                                                                                            set(layer[item_VR_OFF].alpha,0.0);
+                                                                                            set(layer[item_VR_ON].enabled,true);
+                                                                                            set(layer[item_VR_OFF].enabled,false);
+                                                                                            set(switchVR, true);action_btnVR();"/>
+   </layer>
+    
+    <layer name="btn_Plan" type="container" align="bottomleft" x="30" y="60" y.iphone="60" keep="true" >
+    <layer name="item_ON_plan" url="skin/Picto_plan_off.png" align="middle" x="-0" scale="0.15" alpha="0.0" onclick="set(layer[item_ON_plan].alpha,0.0);
+                                                                                            set(layer[item_OFF_plan].alpha,1.0);
+                                                                                            set(layer[item_ON_plan].enabled,false);
+                                                                                            set(layer[item_OFF_plan].enabled,true);
+                                                                                            loadscene(scene_map_plan, null, KEEPVIEW, OPENBLEND(2,   0, 0.75, linear));  action_btn();"/>
+   <layer name="item_OFF_plan" url="skin/Picto_plan.png" align="middle" x="-0" scale="0.15" alpha="1.0" onclick="set(layer[item_ON_plan].alpha,1.0);
+                                                                                            set(layer[item_OFF_plan].alpha,0.0);
+                                                                                            set(layer[item_ON_plan].enabled,true);
+                                                                                            set(layer[item_OFF_plan].enabled,false);
+                                                                                            loadscene(scene_map_satellite, null, KEEPVIEW, OPENBLEND(2,   0, 0.75, linear));  action_btn();"/>
+   </layer>
+
+
+       <action name="action_btn">
+        if (switchPlan,
+                    set(layer[item_ON].alpha,0.0);
+                    set(layer[item_OFF].alpha,1.0);
+                    set(layer[item_ON].enabled,false);
+                    set(layer[item_OFF].enabled,true);
+                    tween(hotspot[chateau].alpha,0.0,distance(0.3,0.2));,
+                    trace (switchPlan);
+                    set(layer[item_OFF].alpha,0.0);
+                    set(layer[item_ON].alpha,1.0);
+                    set(layer[item_ON].enabled,true);
+                    set(layer[item_OFF].enabled,false);
+                    set(switchPlan, false);
+                    tween(hotspot[chateau].alpha,1.0,distance(0.3,0.2));
+            );
+    </action>
+    
+    <action name="action_btnVR">
+    set(chateauIsvisible,get(hotspot[chateau].alpha));
+        for(set(i,0), i LT hotspot.count, inc(i),
+        switch(hotspot[get(i)].alpha, 1.0, 0.0);
+        );
+        set(hotspot[HS_VR1].alpha,1.0);
+        set(hotspot[HS_VR2].alpha,1.0);
+        set(hotspot[HS_VR3].alpha,1.0);
+        set(hotspot[HS_VR4].alpha,1.0);
+        set(hotspot[HS_VR5].alpha,1.0);
+        set(hotspot[HS_VR6].alpha,1.0);
+        set(hotspot[HS_VR7].alpha,1.0);
+        set(hotspot[HS_VR8].alpha,1.0);
+        set(hotspot[chateau].alpha,get(chateauIsvisible));
+    </action>
+	
+	<scene name="scene_map_plan" title="map_plan" onstart="" thumburl="panos/map_plan.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view fovtype="HFOV" limitview="fullrange" fov.mobile="0.15" fov.tablet="0.25" fov.desktop="0.5" hlookat="-0.08" vlookat="-0.04" maxpixelzoom="1.5" fovmax="1" fovmax.tablet="0.5" fovmax.mobile="0.4"/>
+
+		<!-- <preview url="panos/map_plan.tiles/preview.jpg" /> -->
+
+		<image type="CYLINDER" hfov="1.00" vfov="0.484250" voffset="0.00" multires="true" tilesize="4000" progressive="true">
+			<level tiledimagewidth="8000" tiledimageheight="3874">
+				<cylinder url="panos/map_plan.tiles/pano_%v%h.jpg" />
+			</level>
+		</image>
+
+<hotspot name="HS_VR1" url="skin/cityloop_pin.png" edge="bottom" align="middle" enabled="true" ath="-0.060" atv="-0.03" scale="0.0005" alpha="1" distorted="true" onclick="openurl(../VR01/index.html, _self);" keep="true" zorder="70"/>
+<!-- <hotspot name="HS_VR2" url="skin/cityloop_pin.png" edge="bottom" align="middle" enabled="true" ath="-0.080" atv="0.01" scale="0.0005" alpha="1" distorted="true" onclick="openurl(../VR02/index.html, _self);" keep="true" zorder="70"/> -->
+<hotspot name="HS_VR5" url="skin/cityloop_pin.png" edge="bottom" align="middle" enabled="true" ath="-0.038" atv="0.001" scale="0.0005" alpha="1" distorted="true" onclick="openurl(../VR05/index.html, _self);" keep="true" zorder="70"/>
+<hotspot name="HS_VR3" url="skin/cityloop_pin.png" edge="bottom" align="middle" enabled="true" ath="-0.114" atv="-0.002" scale="0.0005" alpha="1" distorted="true" onclick="openurl(../VR03/index.html, _self);" keep="true" zorder="70"/>
+<!-- <hotspot name="HS_VR4" url="skin/cityloop_pin.png" edge="bottom" align="middle" enabled="true" ath="-0.092" atv="-0.042" scale="0.0005" alpha="1" distorted="true" onclick="openurl(../VR04/index.html, _self);" keep="true" zorder="70"/> -->
+<!-- resto -->  
+<hotspot name="resto01" url="skin/Picto_Resto.png" edge="bottom" align="middle" enabled="true" ath="-0.075" atv="-0.05" scale="0.0002" alpha="1" distorted="true" mytext="Restaurant" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="55"/>
+<hotspot name="resto02" url="skin/Picto_Resto.png" edge="bottom" align="middle" enabled="true" ath="-0.063" atv="-0.042" scale="0.0002" alpha="1" distorted="true" mytext="Restaurant" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="55"/>
+<hotspot name="resto03" url="skin/Picto_Resto.png" edge="bottom" align="middle" enabled="true" ath="-0.082" atv="-0.035" scale="0.0002" alpha="1" distorted="true" mytext="Restaurant" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="55"/>
+<hotspot name="resto04" url="skin/Picto_Resto.png" edge="bottom" align="middle" enabled="true" ath="-0.055" atv="-0.020" scale="0.0002" alpha="1" distorted="true" mytext="Restaurant" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="55"/>
+<hotspot name="resto05" url="skin/Picto_Resto.png" edge="bottom" align="middle" enabled="true" ath="-0.04" atv="-0.004" scale="0.0002" alpha="1" distorted="true" mytext="Restaurant" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="55"/>
+<hotspot name="resto06" url="skin/Picto_Resto.png" edge="bottom" align="middle" enabled="true" ath="-0.073" atv="0.004" scale="0.0002" alpha="1" distorted="true" mytext="Restaurant" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="55"/>
+<hotspot name="resto07" url="skin/Picto_Resto.png" edge="bottom" align="middle" enabled="true" ath="-0.106" atv="-0.007" scale="0.0002" alpha="1" distorted="true" mytext="Restaurant" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="55"/>
+<hotspot name="resto08" url="skin/Picto_Resto.png" edge="bottom" align="middle" enabled="true" ath="-0.108" atv="0.001" scale="0.0002" alpha="1" distorted="true" mytext="Restaurant" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="55"/>
+
+<!-- hotel -->
+<hotspot name="hotel01" url="skin/Picto_Hotel.png" edge="bottom" align="middle" enabled="true" ath="-0.0435" atv="0.0075" scale="0.0002" alpha="1" distorted="true" mytext="Hôtel" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="55"/>
+
+<!-- activités -->
+<hotspot name="activite01" url="skin/Picto_Mairie.png" edge="bottom" align="middle" enabled="true" ath="-0.067" atv="-0.026" scale="0.0003" alpha="1" distorted="true" mytext="Mairie" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite02" url="skin/Picto_Train_SNCF.png" edge="bottom" align="middle" enabled="true" ath="-0.166" atv="0.01" scale="0.0003" alpha="1" distorted="true" mytext="Gare SNCF" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite03" url="skin/Picto_Eglise.png" edge="bottom" align="middle" enabled="true" ath="-0.055" atv="-0.03" scale="0.0003" alpha="1" distorted="true" mytext="Collégiale Notre-Dame de Vernon" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite04" url="skin/Picto_Musee.png" edge="bottom" align="middle" enabled="true" ath="-0.072" atv="-0.063" scale="0.0003" alpha="1" distorted="true" mytext="Musée AG Poulain de Vernon" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite05" url="skin/Picto_Cinema.png" edge="bottom" align="middle" enabled="true" ath="-0.03" atv="0.002" scale="0.0003" alpha="1" distorted="true" mytext="Cinéma" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite06" url="skin/Picto_Hopital.png" edge="bottom" align="middle" enabled="true" ath="-0.03" atv="0.04" scale="0.0003" alpha="1" distorted="true" mytext="Hôpital" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite07" url="skin/Picto_Bus.png" edge="bottom" align="middle" enabled="true" ath="-0.07" atv="0.04" scale="0.0003" alpha="1" distorted="true" mytext="Gare routière" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite08" url="skin/Picto_Supermarche.png" edge="bottom" align="middle" enabled="true" ath="-0.087" atv="0.014" scale="0.0003" alpha="1" distorted="true" mytext="Commerce" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite09" url="skin/Picto_Poste.png" edge="bottom" align="middle" enabled="true" ath="-0.115" atv="-0.006" scale="0.0003" alpha="1" distorted="true" mytext="La poste" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite10" url="skin/Picto_Theatre.png" edge="bottom" align="middle" enabled="true" ath="-0.095" atv="-0.032" scale="0.0003" alpha="1" distorted="true" mytext="Espace Philippe-Auguste" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+<hotspot name="activite11" url="skin/Picto_Chateau.png" edge="bottom" align="middle" enabled="true" ath="-0.085" atv="-0.05" scale="0.0003" alpha="1" distorted="true" mytext="Château" ondown="js('topInfoShow(get(mytext));')" onup="js('topInfoHide();')" keep="true" zorder="60"/>
+  
+	</scene>
+
+	<scene name="scene_map_satellite" title="map_satellite" onstart="" thumburl="panos/map_satellite.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view fovtype="HFOV" limitview="fullrange" fov.mobile="0.15" fov.tablet="0.25" fov.desktop="0.35" hlookat="0" vlookat="0.06" maxpixelzoom="1.5" fovmax="1"/>
+
+		<!-- <preview url="panos/map_satellite.tiles/preview.jpg" /> -->
+
+		<image type="CYLINDER" hfov="1.00" vfov="0.484250" voffset="0.00" multires="true" tilesize="4000" progressive="true">
+			<level tiledimagewidth="8000" tiledimageheight="3874">
+				<cylinder url="panos/map_satellite.tiles/pano_%v%h.jpg" />
+			</level>
+		</image>
+
+  
+
+	</scene>
+
+
+</krpano>

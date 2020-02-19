@@ -1,0 +1,19 @@
+<krpano>
+    <plugin name="geomapping" devices="html5" keep="true" url="geomapping-krpano.js" />
+
+    <georepere name="gifi"
+               ath="-0.4767296828704275" atv="-0.21240937817979277"
+               lat="49.101376" lng="1.457346"></georepere>
+
+    <georepere name="osaka"
+               ath="0.22537431225475757" atv="0.23568025807241805"
+               lat="49.081349" lng="1.505487"></georepere>
+
+    <geohotspot name="parking-gare" text="Parking Gare" url="hotspot1.png" scale="0.3"
+               lat="49.0928952" lng="1.4769144" ondown="js('topInfoShow(get(text));')" onup="js('topInfoHide();')"></geohotspot>
+
+    <geohotspot name="le-vieux-moulin" text="Le Vieux Moulin" url="hotspot1.png" scale="0.3"
+               lat="49.0973194" lng="1.4866723" ondown="js(topInfoShow(get('text'));)" onup="js('topInfoHide();')"></geohotspot>
+
+    <tracker text="Ma position" url="tracker.png" scale="0.3" ondown="js(topInfoShow(get('text'));)" onup="js('topInfoHide();')"></tracker>
+</krpano>

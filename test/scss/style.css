@@ -1,0 +1,72 @@
+@font-face {
+  font-family: 'questrialregular';
+  src: url("../fonts/questrial-regular-webfont.eot");
+  src: url("../fonts/questrial-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/questrial-regular-webfont.woff2") format("woff2"), url("../fonts/questrial-regular-webfont.woff") format("woff"), url("../fonts/questrial-regular-webfont.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+svg text {
+  font-family: "questrialregular" !important; }
+  svg text tspan {
+    font-family: "questrialregular" !important; }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 20px;
+  background-color: #ccc;
+  box-sizing: border-box; }
+
+#container {
+  position: relative;
+  float: left;
+  /*height: 100%;
+  width: 100%;
+  max-height: 100%;
+  max-width: calc(100% - 440px);*/
+  height: calc(100vh - 80px);
+  width: calc(100vh - 80px);
+  border: 1px solid white;
+  overflow: hidden; }
+  #container.zoomed svg g#map-regions g:not(.country-on) {
+    opacity: 0.25 !important; }
+  #container svg {
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent; }
+    #container svg * {
+      user-select: none !important;
+      -webkit-tap-highlight-color: transparent; }
+    #container svg g {
+      pointer-events: none; }
+      #container svg g#map-regions {
+        pointer-events: all !important;
+        z-index: 999; }
+        #container svg g#map-regions g {
+          pointer-events: all !important;
+          z-index: 999;
+          cursor: pointer; }
+
+/* UI */
+#search-container {
+  float: left;
+  margin-left: 20px; }
+  #search-container input {
+    float: left;
+    width: 300px;
+    padding: 5px 10px; }
+  #search-container .btn {
+    float: left;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    user-select: none;
+    cursor: pointer; }
+    #search-container .btn#track-btn {
+      margin-top: 20px; }
+  #search-container #logs {
+    clear: both;
+    max-width: 400px;
+    margin-top: 50px; }
+
+/*# sourceMappingURL=style.css.map */

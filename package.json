@@ -1,0 +1,22 @@
+{
+  "name": "geomapping",
+  "version": "0.0.1",
+  "description": "Geolocation coordinates on image",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/axeon-software/geomapping.git"
+  },
+  "author": "Sébastien Montlibert",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/axeon-software/geomapping/issues"
+  },
+  "homepage": "https://github.com/axeon-software/geomapping#readme",
+  "dependencies": {
+    "zoomable": "github:fabsharp/Zoomable"
+  },
+  "devDependencies": {
+    "jquery": "^3.3.1",
+    "pep": "^1.0.13"
+  }
+}
