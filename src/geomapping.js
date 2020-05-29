@@ -234,10 +234,13 @@ var geoMapping = /** @class */ (function () {
         return this._getPointLatLongOnStaticMap(x, y, this._bbox);
     };
     ;
-    geoMapping.prototype.trackPosition = function () {
+    geoMapping.prototype.trackPosition = function (_error) {
         var _this = this;
         if ((!window.navigator) || (!window.navigator.geolocation)) {
             console.error("geoMapping :: error on trackPosition :: geolocation unavailable");
+            if (typeof _error === 'function') {
+                _error("geoMapping :: error on trackPosition :: geolocation unavailable");
+            }
             return;
         }
         if (!this._watchPositionId) {
@@ -245,6 +248,9 @@ var geoMapping = /** @class */ (function () {
                 _this.trigger(geoMapping.EVENTS.UPDATE_POSITION, _this._getPointXYOnStaticMap(_pos.coords.latitude, _pos.coords.longitude, _this._bbox));
             }, function (err) {
                 console.error("geoMapping :: error on trackPosition", err);
+                if (typeof _error === 'function') {
+                    _error("geoMapping :: error on trackPosition", err);
+                }
             });
         }
         else {

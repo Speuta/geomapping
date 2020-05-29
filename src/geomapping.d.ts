@@ -40,7 +40,7 @@ declare class geoMapping {
     addPoint(lat: number, lng: number, name: string): any;
     removePoint(pointName: string): void;
     getLatLngOnMap(x: number, y: number): any;
-    trackPosition(): void;
+    trackPosition(_error: any): void;
     stopTrackPosition(): void;
     /** EVENTS **/
     on: (eventName: string, handler: any) => void;

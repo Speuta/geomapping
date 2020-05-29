@@ -230,9 +230,12 @@ class geoMapping {
         return this._getPointLatLongOnStaticMap(x, y, this._bbox);
     };
 
-    public trackPosition(){
+    public trackPosition(_error){
         if ((!window.navigator) || (!window.navigator.geolocation)) {
             console.error(`geoMapping :: error on trackPosition :: geolocation unavailable`);
+            if(typeof _error === 'function'){
+                _error(`geoMapping :: error on trackPosition :: geolocation unavailable`);
+            }
             return;
         }
         if(!this._watchPositionId){
@@ -242,6 +245,9 @@ class geoMapping {
                 );
             }, (err) => {
                 console.error(`geoMapping :: error on trackPosition`, err);
+                if(typeof _error === 'function'){
+                    _error(`geoMapping :: error on trackPosition`, err);
+                }
             });
         } else {
             console.warn(`geoMapping :: already tracking position`);

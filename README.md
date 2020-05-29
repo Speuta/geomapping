@@ -17,7 +17,7 @@ var geoMap = new geoMapping(geomapConfig);
 *  **addPoint(lat, lng, name):** Add it to the list of points.
 *  **removePoint(pointName):** Remove it from the list of points.
 *  **getLatLngOnMap(x, y):** Get lat and lng of a point in the map.
-*  **trackPosition():** Track user GPS position, use "UPDATE_POSITION" event to get map point coords.
+*  **trackPosition(errorCallback):** Track user GPS position, use "UPDATE_POSITION" event to get map point coords.
 *  **stopTrackPosition():** Stop tracking position.
 
 Example:
@@ -27,7 +27,9 @@ var myPoint = geoMap.addPoint(43.604652, 1.444209, "Toulouse");
 if(!myPoint.isOutOfMap){
     createHotspot(myPoint.x, myPoint.y);
 }
-geoMap.trackPosition();
+geoMap.trackPosition(function(errorMessage){
+    // Error code here
+});
 ```
 
 ## Events:
