@@ -230,6 +230,10 @@ class geoMapping {
         return this._getPointLatLongOnStaticMap(x, y, this._bbox);
     };
 
+    public getPointXYOnMap(lat: number, lng: number) : any {
+        return this._getPointXYOnStaticMap(lat, lng, this._bbox);
+    };
+
     public trackPosition(_error){
         if ((!window.navigator) || (!window.navigator.geolocation)) {
             console.error(`geoMapping :: error on trackPosition :: geolocation unavailable`);

@@ -17,6 +17,7 @@ var geoMap = new geoMapping(geomapConfig);
 *  **addPoint(lat, lng, name):** Add it to the list of points.
 *  **removePoint(pointName):** Remove it from the list of points.
 *  **getLatLngOnMap(x, y):** Get lat and lng of a point in the map.
+*  **getPointXYOnMap(lat, lng):** Get x and y of a coord in the map.
 *  **trackPosition(errorCallback):** Track user GPS position, use "UPDATE_POSITION" event to get map point coords.
 *  **stopTrackPosition():** Stop tracking position.
 

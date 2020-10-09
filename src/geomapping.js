@@ -234,6 +234,10 @@ var geoMapping = /** @class */ (function () {
         return this._getPointLatLongOnStaticMap(x, y, this._bbox);
     };
     ;
+    geoMapping.prototype.getPointXYOnMap = function (lat, lng) {
+        return this._getPointXYOnStaticMap(lat, lng, this._bbox);
+    };
+    ;
     geoMapping.prototype.trackPosition = function (_error) {
         var _this = this;
         if ((!window.navigator) || (!window.navigator.geolocation)) {
