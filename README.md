@@ -12,10 +12,14 @@ Init geoMapping:
 var geoMap = new geoMapping(geomapConfig);
 ```
 
+[See example of config](./test/geomap-config.js)
+
 ## Functions:
 *  **getPoints():** Return all points with x and y position.
-*  **addPoint(lat, lng, name):** Add it to the list of points.
-*  **removePoint(pointName):** Remove it from the list of points.
+*  **getPointById(id):** Return the point object.
+*  **filterPointsByData(key, value):** Return points object filtered by your params.
+*  **addPoint(lat, lng, id, data):** Add it to the list of points.
+*  **removePoint(id):** Remove it from the list of points.
 *  **getLatLngOnMap(x, y):** Get lat and lng of a point in the map.
 *  **getPointXYOnMap(lat, lng):** Get x and y of a coord in the map.
 *  **trackPosition(errorCallback):** Track user GPS position, use "UPDATE_POSITION" event to get map point coords.
@@ -24,10 +28,15 @@ var geoMap = new geoMapping(geomapConfig);
 Example:
 ``` javascript
 var points = geoMap.getPoints();
-var myPoint = geoMap.addPoint(43.604652, 1.444209, "Toulouse");
+var myPoint = geoMap.addPoint(43.604652, 1.444209, "Toulouse", {
+    dpt: "Haute Garonne",
+    postal: 31000
+});
 if(!myPoint.isOutOfMap){
     createHotspot(myPoint.x, myPoint.y);
 }
+geoMap.getPointById("Toulouse");
+geoMap.filterPointsByData("postal", 31000);
 geoMap.trackPosition(function(errorMessage){
     // Error code here
 });

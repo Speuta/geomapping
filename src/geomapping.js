@@ -1,6 +1,5 @@
-var geoMapping = /** @class */ (function () {
-    function geoMapping(_config) {
-        var _this = this;
+class geoMapping {
+    constructor(_config) {
         this._config = _config;
         this._events = {};
         this._eventsOnce = [];
@@ -8,45 +7,48 @@ var geoMapping = /** @class */ (function () {
         this._points = [];
         this._img = undefined;
         this._watchPositionId = undefined;
-        this._generateEvents = function () {
-            Object.keys(geoMapping.EVENTS).forEach(function (_key) {
-                _this._events[geoMapping.EVENTS[_key]] = [];
+        this._generateEvents = () => {
+            Object.keys(geoMapping.EVENTS).forEach((_key) => {
+                this._events[geoMapping.EVENTS[_key]] = [];
             });
         };
         /** EVENTS **/
-        this.on = function (eventName, handler) {
-            if (_this._events[eventName]) {
-                _this._events[eventName].push(handler);
+        this.on = (eventName, handler) => {
+            if (this._events[eventName]) {
+                this._events[eventName].push(handler);
             }
         };
-        this.one = function (eventName, handler) {
-            if (_this._events[eventName]) {
-                _this._events[eventName].push(handler);
-                _this._eventsOnce.push(handler);
+        this.one = (eventName, handler) => {
+            if (this._events[eventName]) {
+                this._events[eventName].push(handler);
+                this._eventsOnce.push(handler);
             }
         };
-        this.off = function (eventName, handler) {
-            if (_this._events[eventName] && (_this._events[eventName].indexOf(handler) !== -1)) {
-                _this._events[eventName].splice(_this._events[eventName].indexOf(handler), 1);
+        this.off = (eventName, handler) => {
+            if (this._events[eventName] && (this._events[eventName].indexOf(handler) !== -1)) {
+                this._events[eventName].splice(this._events[eventName].indexOf(handler), 1);
             }
-            if (_this._eventsOnce.indexOf(handler) !== -1) {
-                _this._eventsOnce.splice(_this._eventsOnce.indexOf(handler), 1);
+            if (this._eventsOnce.indexOf(handler) !== -1) {
+                this._eventsOnce.splice(this._eventsOnce.indexOf(handler), 1);
             }
         };
-        this.trigger = function (eventName, data) {
-            if (_this._events[eventName]) {
-                _this._events[eventName].forEach(function (_handler, _index) {
+        this.trigger = (eventName, data) => {
+            if (this._events[eventName]) {
+                this._events[eventName].forEach((_handler, _index) => {
                     _handler(data);
-                    if (_this._eventsOnce.indexOf(_handler) !== -1) {
-                        _this._events[eventName].splice(_index, 1);
-                        _this._eventsOnce.splice(_this._eventsOnce.indexOf(_handler), 1);
+                    if (this._eventsOnce.indexOf(_handler) !== -1) {
+                        this._events[eventName].splice(_index, 1);
+                        this._eventsOnce.splice(this._eventsOnce.indexOf(_handler), 1);
                     }
                 });
             }
         };
         if (!this._config.boundingBox) {
-            console.error("geoMapping :: boundingBox is mandatory.");
+            console.error(`geoMapping :: boundingBox is mandatory.`);
             return;
+        }
+        if (typeof this._config.testOutOfImage !== 'boolean') {
+            this._config.testOutOfImage = false;
         }
         /*if(!this._config.imgSrc){
             console.error(`geoMapping :: imgSrc is mandatory.`);
@@ -56,24 +58,23 @@ var geoMapping = /** @class */ (function () {
         return this;
     }
     /** PRIVATE **/
-    geoMapping.prototype._init = function () {
-        var _this = this;
+    _init() {
         this._generateEvents();
-        var _initBboxAndPoints = function () {
-            _this._bbox = _this._getStaticMapBoundingBoxFromTwoPoints(_this._config.boundingBox[0], _this._config.boundingBox[1]);
-            if (_this._config.points && _this._config.points.length > 0) {
-                _this._config.points.forEach(function (_pt) {
-                    _this._addPoint(_pt.lat, _pt.lng, _pt.name);
+        var _initBboxAndPoints = () => {
+            this._bbox = this._getStaticMapBoundingBoxFromTwoPoints(this._config.boundingBox[0], this._config.boundingBox[1]);
+            if (this._config.points && this._config.points.length > 0) {
+                this._config.points.forEach((_pt) => {
+                    this._addPoint(_pt.lat, _pt.lng, _pt.id, _pt.data);
                 });
             }
-            _this.trigger(geoMapping.EVENTS.READY);
+            this.trigger(geoMapping.EVENTS.READY);
         };
         if (typeof this._config.imgSrc === 'string') {
-            this._preloadImg(this._config.imgSrc, function (img) {
-                _this._img = img;
+            this._preloadImg(this._config.imgSrc, (img) => {
+                this._img = img;
                 _initBboxAndPoints();
-            }, function (err) {
-                console.error("geoMapping :: error on preloading " + _this._config.imgSrc, err);
+            }, (err) => {
+                console.error(`geoMapping :: error on preloading ${this._config.imgSrc}`, err);
             });
         }
         else if (this._config.imgSrc) {
@@ -83,50 +84,50 @@ var geoMapping = /** @class */ (function () {
         else {
             _initBboxAndPoints();
         }
-    };
+    }
     ;
-    geoMapping.prototype._preloadImg = function (src, success, error) {
-        var image = new Image();
-        image.onload = function () {
+    _preloadImg(src, success, error) {
+        let image = new Image();
+        image.onload = () => {
             if (typeof success === 'function') {
                 success(image);
             }
         };
-        image.onerror = function (err) {
+        image.onerror = (err) => {
             if (typeof error === 'function') {
                 error(err);
             }
         };
         image.src = src;
-    };
+    }
     ;
-    geoMapping.prototype._lngToX = function (lng) {
+    _lngToX(lng) {
         return Math.round(geoMapping.PIXELS_OFFSET + geoMapping.PIXELS_RADIUS * lng * Math.PI / 180);
-    };
+    }
     ;
-    geoMapping.prototype._latToY = function (lat) {
+    _latToY(lat) {
         return Math.round(geoMapping.PIXELS_OFFSET - geoMapping.PIXELS_RADIUS *
             Math.log((1 + Math.sin(lat * Math.PI / 180)) /
                 (1 - Math.sin(lat * Math.PI / 180))) / 2);
-    };
+    }
     ;
-    geoMapping.prototype._XToLon = function (x) {
+    _XToLon(x) {
         return ((Math.round(x) - geoMapping.PIXELS_OFFSET) / geoMapping.PIXELS_RADIUS) * 180 / Math.PI;
-    };
+    }
     ;
-    geoMapping.prototype._YToLat = function (y) {
+    _YToLat(y) {
         return (Math.PI / 2 - 2 * Math.atan(Math.exp((Math.round(y) - geoMapping.PIXELS_OFFSET) / geoMapping.PIXELS_RADIUS))) * 180 / Math.PI;
-    };
+    }
     ;
-    geoMapping.prototype._getStaticMapBoundingBoxFromTwoPoints = function (point1, point2) {
+    _getStaticMapBoundingBoxFromTwoPoints(point1, point2) {
         // Coordinates of the inner bounding box containing the two points
-        var box = {
+        let box = {
             tl: undefined,
             br: undefined,
             width: undefined,
             height: undefined
         };
-        var map = {
+        let map = {
             v_scale: undefined,
             h_scale: undefined,
             topLeft: undefined,
@@ -150,8 +151,8 @@ var geoMapping = /** @class */ (function () {
         box.width = box.br.x - box.tl.x;
         box.height = box.br.y - box.tl.y;
         // Horizontal and vertical distance in pixels on full-size projection
-        var v_delta = box.br.lat - box.tl.lat;
-        var h_delta = box.br.lng - box.tl.lng;
+        let v_delta = box.br.lat - box.tl.lat;
+        let h_delta = box.br.lng - box.tl.lng;
         // Get scale from the distance applied to map size
         map.v_scale = v_delta / box.height;
         map.h_scale = h_delta / box.width;
@@ -169,119 +170,128 @@ var geoMapping = /** @class */ (function () {
         map.bottomRight.lat = this._YToLat(map.bottomRight.y);
         map.bottomRight.lng = this._XToLon(map.bottomRight.x);
         return map;
-    };
+    }
     ;
-    geoMapping.prototype._getPointXYOnStaticMap = function (lat, lng, map) {
+    _getPointXYOnStaticMap(lat, lng, map) {
         return {
             lat: lat,
             lng: lng,
             x: (this._lngToX(lng) - map.topLeft.x) / map.h_scale,
             y: (this._latToY(lat) - map.topLeft.y) / map.v_scale
         };
-    };
+    }
     ;
-    geoMapping.prototype._getPointLatLongOnStaticMap = function (x, y, map) {
+    _getPointLatLongOnStaticMap(x, y, map) {
         return {
             lat: this._YToLat(map.topLeft.y + (y * map.v_scale)),
             lng: this._XToLon(map.topLeft.x + (x * map.h_scale))
         };
-    };
+    }
     ;
-    geoMapping.prototype._addPoint = function (lat, lng, name) {
-        var _point = this._getPointXYOnStaticMap(lat, lng, this._bbox);
-        _point.name = name;
+    _addPoint(lat, lng, id, data) {
+        let _point = this._getPointXYOnStaticMap(lat, lng, this._bbox);
+        _point.id = id;
+        _point.data = data;
         _point.isOutOfMap = this._isOutOfImage(_point.x, _point.y);
         this._points.push(_point);
         return _point;
-    };
+    }
     ;
-    geoMapping.prototype._isOutOfImage = function (x, y) {
+    _isOutOfImage(x, y) {
         if (this._img) {
             return !((x >= 0) && (x <= this._img.width) && (y >= 0) && (y <= this._img.height));
         }
         else {
             return false;
         }
-    };
+    }
     ;
     /** PUBLIC **/
-    geoMapping.prototype.getPoints = function () {
+    getPoints() {
         return this._points;
-    };
+    }
     ;
-    geoMapping.prototype.addPoint = function (lat, lng, name) {
-        var point = this._addPoint(lat, lng, name);
+    getPointById(id) {
+        return this._points.find((_p) => {
+            return _p.id === id;
+        });
+    }
+    ;
+    filterPointsByData(key, value) {
+        return this._points.filter((_p) => {
+            return (_p.data) && (_p.data[key]) && (_p.data[key] == value);
+        });
+    }
+    ;
+    addPoint(lat, lng, id, data) {
+        let point = this._addPoint(lat, lng, id, data);
         this.trigger(geoMapping.EVENTS.ADD, point);
         return point;
-    };
+    }
     ;
-    geoMapping.prototype.removePoint = function (pointName) {
-        var _this = this;
-        this._points.forEach(function (_pt, _index) {
-            if (_pt.name === pointName) {
-                _this._points.splice(_index, 1);
-                _this.trigger(geoMapping.EVENTS.REMOVE, _pt);
+    removePoint(pointId) {
+        this._points.forEach((_pt, _index) => {
+            if (_pt.id === pointId) {
+                this._points.splice(_index, 1);
+                this.trigger(geoMapping.EVENTS.REMOVE, _pt);
             }
         });
-    };
+    }
     ;
-    geoMapping.prototype.getLatLngOnMap = function (x, y) {
-        //FIXME :: set in config if test isOutOfImage mandatory
-        if (this._isOutOfImage(x, y)) {
-            console.error("geoMapping :: this point is out of map.");
+    getLatLngOnMap(x, y) {
+        if ((this._config.testOutOfImage) && (this._isOutOfImage(x, y))) {
+            console.error(`geoMapping :: this point is out of map.`);
             return;
         }
         return this._getPointLatLongOnStaticMap(x, y, this._bbox);
-    };
+    }
     ;
-    geoMapping.prototype.getPointXYOnMap = function (lat, lng) {
+    getPointXYOnMap(lat, lng) {
         return this._getPointXYOnStaticMap(lat, lng, this._bbox);
-    };
+    }
     ;
-    geoMapping.prototype.trackPosition = function (_error) {
-        var _this = this;
+    trackPosition(_error) {
         if ((!window.navigator) || (!window.navigator.geolocation)) {
-            console.error("geoMapping :: error on trackPosition :: geolocation unavailable");
+            console.error(`geoMapping :: error on trackPosition :: geolocation unavailable`);
             if (typeof _error === 'function') {
-                _error("geoMapping :: error on trackPosition :: geolocation unavailable");
+                _error(`geoMapping :: error on trackPosition :: geolocation unavailable`);
             }
             return;
         }
         if (!this._watchPositionId) {
-            this._watchPositionId = navigator.geolocation.watchPosition(function (_pos) {
-                _this.trigger(geoMapping.EVENTS.UPDATE_POSITION, _this._getPointXYOnStaticMap(_pos.coords.latitude, _pos.coords.longitude, _this._bbox));
-            }, function (err) {
-                console.error("geoMapping :: error on trackPosition", err);
+            this._watchPositionId = navigator.geolocation.watchPosition((_pos) => {
+                this.trigger(geoMapping.EVENTS.UPDATE_POSITION, this._getPointXYOnStaticMap(_pos.coords.latitude, _pos.coords.longitude, this._bbox));
+            }, (err) => {
+                console.error(`geoMapping :: error on trackPosition`, err);
                 if (typeof _error === 'function') {
-                    _error("geoMapping :: error on trackPosition", err);
+                    _error(`geoMapping :: error on trackPosition`, err);
                 }
             });
         }
         else {
-            console.warn("geoMapping :: already tracking position");
+            console.warn(`geoMapping :: already tracking position`);
         }
-    };
+    }
     ;
-    geoMapping.prototype.stopTrackPosition = function () {
+    stopTrackPosition() {
         if (this._watchPositionId) {
             navigator.geolocation.clearWatch(this._watchPositionId);
             this._watchPositionId = undefined;
             this.trigger(geoMapping.EVENTS.STOP_POSITION);
         }
         else {
-            console.warn("geoMapping :: tracking position is not activated");
+            console.warn(`geoMapping :: tracking position is not activated`);
         }
-    };
+    }
     ;
-    geoMapping.PIXELS_OFFSET = 268435456;
-    geoMapping.PIXELS_RADIUS = 85445659.4471; /* PIXELS_OFFSET / pi() */
-    geoMapping.EARTH_RADIUS = 6378.1; // Average radius of earth (in kilometers)
-    geoMapping.EVENTS = {
-        READY: 'ready',
-        ADD: 'add',
-        REMOVE: 'remove',
-        UPDATE_POSITION: 'update_position',
-        STOP_POSITION: 'stop_position'
-    };
-    return geoMapping;
-}());
+}
+geoMapping.PIXELS_OFFSET = 268435456;
+geoMapping.PIXELS_RADIUS = 85445659.4471; /* PIXELS_OFFSET / pi() */
+geoMapping.EARTH_RADIUS = 6378.1; // Average radius of earth (in kilometers)
+geoMapping.EVENTS = {
+    READY: 'ready',
+    ADD: 'add',
+    REMOVE: 'remove',
+    UPDATE_POSITION: 'update_position',
+    STOP_POSITION: 'stop_position'
+};

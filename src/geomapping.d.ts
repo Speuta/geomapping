@@ -1,4 +1,5 @@
 interface geoMappingConfigInterface {
+    testOutOfImage: boolean;
     boundingBox: any[];
     imgSrc?: any;
     points?: any[];
@@ -37,8 +38,10 @@ declare class geoMapping {
     private _isOutOfImage;
     /** PUBLIC **/
     getPoints(): any[];
-    addPoint(lat: number, lng: number, name: string): any;
-    removePoint(pointName: string): void;
+    getPointById(id: string): any;
+    filterPointsByData(key: string, value: any): any;
+    addPoint(lat: number, lng: number, id: string, data?: any): any;
+    removePoint(pointId: string): void;
     getLatLngOnMap(x: number, y: number): any;
     getPointXYOnMap(lat: number, lng: number): any;
     trackPosition(_error: any): void;

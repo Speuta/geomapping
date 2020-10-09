@@ -1,4 +1,5 @@
 interface geoMappingConfigInterface {
+    testOutOfImage: boolean,
     boundingBox: any[],
     imgSrc?: any,
     points?: any[]
@@ -29,6 +30,9 @@ class geoMapping {
             console.error(`geoMapping :: boundingBox is mandatory.`);
             return;
         }
+        if(typeof this._config.testOutOfImage !== 'boolean'){
+            this._config.testOutOfImage = false;
+        }
         /*if(!this._config.imgSrc){
             console.error(`geoMapping :: imgSrc is mandatory.`);
             return;
@@ -47,7 +51,7 @@ class geoMapping {
             );
             if(this._config.points && this._config.points.length > 0){
                 this._config.points.forEach((_pt) => {
-                    this._addPoint(_pt.lat, _pt.lng, _pt.name);
+                    this._addPoint(_pt.lat, _pt.lng, _pt.id, _pt.data);
                 });
             }
             this.trigger(geoMapping.EVENTS.READY);
@@ -184,9 +188,10 @@ class geoMapping {
         };
     };
 
-    private _addPoint(lat: number, lng: number, name: string) :any {
+    private _addPoint(lat: number, lng: number, id: string, data?: any) :any {
         let _point = this._getPointXYOnStaticMap(lat, lng, this._bbox);
-        _point.name = name;
+        _point.id = id;
+        _point.data = data;
         _point.isOutOfMap = this._isOutOfImage(_point.x, _point.y);
         this._points.push(_point);
         return _point;
@@ -206,15 +211,27 @@ class geoMapping {
         return this._points;
     };
 
-    public addPoint(lat: number, lng: number, name: string) :any {
-        let point = this._addPoint(lat, lng, name);
+    public getPointById(id: string) :any {
+        return this._points.find((_p) => {
+            return _p.id === id;
+        });
+    };
+
+    public filterPointsByData(key: string, value: any) :any {
+        return this._points.filter((_p) => {
+            return (_p.data) && (_p.data[key]) && (_p.data[key] == value);
+        });
+    };
+
+    public addPoint(lat: number, lng: number, id: string, data?: any) :any {
+        let point = this._addPoint(lat, lng, id, data);
         this.trigger(geoMapping.EVENTS.ADD, point);
         return point;
     };
 
-    public removePoint(pointName: string){
+    public removePoint(pointId: string){
         this._points.forEach((_pt, _index) => {
-            if(_pt.name === pointName){
+            if(_pt.id === pointId){
                 this._points.splice(_index, 1);
                 this.trigger(geoMapping.EVENTS.REMOVE, _pt);
             }
@@ -222,8 +239,7 @@ class geoMapping {
     };
 
     public getLatLngOnMap(x: number, y: number) : any {
-        //FIXME :: set in config if test isOutOfImage mandatory
-        if(this._isOutOfImage(x, y)){
+        if((this._config.testOutOfImage) && (this._isOutOfImage(x, y))){
             console.error(`geoMapping :: this point is out of map.`);
             return;
         }

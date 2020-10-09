@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES5",
-    "allowJs": true,
+    "target": "ES6",
+    "allowJs": false,
     "sourceMap": false,
     "declaration": true,
     "experimentalDecorators": true
   },
-  "files" : [],
   "include": [
     "src/**/*"
   ]
