@@ -43,11 +43,11 @@ geoMap.trackPosition(function(errorMessage){
 ```
 
 ## Events:
-*  READY
-*  ADD
-*  REMOVE
-*  UPDATE_POSITION
-*  STOP_POSITION
+*  READY : when the lib is ready.
+*  ADD : when a point is added.
+*  REMOVE : when a point is removed.
+*  UPDATE_POSITION : when the user move when tracking position is activated.
+*  STOP_POSITION : when tracking is stopped.
 
 Example:
 ``` javascript
@@ -56,7 +56,7 @@ geoMap.on(geoMapping.EVENTS.READY, function(){
 });
 
 geoMap.on(geoMapping.EVENTS.ADD, function(data){
-    console.log('UPDATE !!', data);
+    console.log('NEW POINT ADDED !!', data);
     updatePoints();
 });
 ```
