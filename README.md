@@ -1,7 +1,7 @@
-# geoMapping
+# GeoMapping
 
 ## Get started:
-Include geoMapping script, you can also load a config file.
+Include GeoMapping script, you can also load a config file.
 ``` html
 <script src="myPath/geomapping.js"></script>
 <script src="myPath/geomap-config.js"></script>
@@ -9,12 +9,12 @@ Include geoMapping script, you can also load a config file.
 
 Init geoMapping:
 ``` javascript
-var geoMap = new geoMapping(geomapConfig);
+var geoMap = new GeoMapping(geomapConfig);
 ```
 
-[See example of config](./test/geomap-config.js)
+[See example of config](./demo/geomap-config.js)
 
-## Functions:
+## Methods:
 *  **getPoints():** Return all points with x and y position.
 *  **getPointById(id):** Return the point object.
 *  **filterPointsByData(key, value):** Return points object filtered by your params.
@@ -51,16 +51,23 @@ geoMap.trackPosition(function(errorMessage){
 
 Example:
 ``` javascript
-geoMap.on(geoMapping.EVENTS.READY, function(){
+geoMap.on(GeoMapping.EVENTS.READY, function(){
     console.log('READY !!');
 });
 
-geoMap.on(geoMapping.EVENTS.ADD, function(data){
+geoMap.on(GeoMapping.EVENTS.ADD, function(data){
     console.log('NEW POINT ADDED !!', data);
     updatePoints();
 });
 ```
 
-## krPano plugin:
-Test here: "./test-krPano/".  
-You can find sources in: "./test-krPano/plugins/geoMapping/".  
+## Library Dev:
+
+Compil via rollup:
+- Dev live reload: `npm run watch`
+- Build: `npm run build`
+
+Test: Open `./test/index.html`
+
+> `npm run test` do not work for the moment (No DOM to load Image)
+

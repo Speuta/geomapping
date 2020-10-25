@@ -23,7 +23,7 @@ var geomapConfig = {
             lng: -1.6777926,
             data: {
                 test: 'findMe',
-                test2: "plop",
+                test2: "plop"
             }
         }, {
             id: "Marseille",
@@ -35,7 +35,7 @@ var geomapConfig = {
             lat: 48.5734053,
             lng: 7.752111299999999,
             data: {
-                test: 'findMe',
+
             }
         }
     ]

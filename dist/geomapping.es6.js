@@ -1,6 +1,6 @@
-'use strict';
+console.log("geomapping v0.0.2")
 
-export default class GeoMapping {
+class GeoMapping {
     static PIXELS_OFFSET = 268435456;
     static PIXELS_RADIUS = 85445659.4471; /* PIXELS_OFFSET / pi() */
 
@@ -308,4 +308,7 @@ export default class GeoMapping {
             });
         }
     };
-};
+}
+
+export default GeoMapping;
+//# sourceMappingURL=geomapping.es6.js.map

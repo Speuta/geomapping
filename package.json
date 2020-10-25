@@ -1,7 +1,12 @@
 {
   "name": "geomapping",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Geolocation coordinates on image",
+  "scripts": {
+    "test": "mocha",
+    "watch": "rollup -c -w",
+    "build": "rollup -c"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/axeon-software/geomapping.git"
@@ -16,7 +21,10 @@
     "zoomable": "github:fabsharp/Zoomable"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "jquery": "^3.3.1",
-    "pep": "^1.0.13"
+    "mocha": "^5.2.0",
+    "pep": "^1.0.13",
+    "rollup-plugin-terser": "^7.0.2"
   }
 }
