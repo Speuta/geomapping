@@ -1,6 +1,11 @@
 # GeoMapping
 
+[![npm version](https://badge.fury.io/js/geomapping.svg)](https://badge.fury.io/js/geomapping)
+
 ## Get started:
+Installation:  
+`npm install geomapping`
+
 Include GeoMapping script, you can also load a config file.
 ``` html
 <script src="myPath/geomapping.js"></script>
